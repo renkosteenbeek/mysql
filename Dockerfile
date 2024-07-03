@@ -4,16 +4,16 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM ubuntu:xenial
+FROM ubuntu:noble
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mysql && useradd -r -g mysql mysql
 
-RUN apt-get update && apt-get install -y --no-install-recommends gnupg-curl gnupg dirmngr && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends gnupg dirmngr && rm -rf /var/lib/apt/lists/*
 
 # add gosu for easy step-down from root
 # https://github.com/tianon/gosu/releases
-ENV GOSU_VERSION 1.14
+ENV GOSU_VERSION 1.17
 RUN set -eux; \
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
@@ -59,8 +59,8 @@ RUN set -ex; \
 	rm -rf "$GNUPGHOME"; \
 	apt-key list > /dev/null
 
-ENV MYSQL_MAJOR 5.7
-ENV MYSQL_VERSION 5.7
+ENV MYSQL_MAJOR 8.0
+ENV MYSQL_VERSION 8.0
 
 ## Setup the root user password
 #RUN debconf-set-selections <<< "mysql-server mysql-server/root_password password password"
